@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f6f9fd"/>
+      <stop offset="1" stop-color="#eef7fb"/>
+    </linearGradient>
+    <linearGradient id="navy" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b2b4a"/>
+      <stop offset="1" stop-color="#123d63"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1f6bff"/>
+      <stop offset="1" stop-color="#18c4da"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#0a253f" flood-opacity="0.18"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#18c4da"/>
+    </marker>
+    <style>
+      .title { font: 700 44px 'Microsoft YaHei', 'Aptos', Arial, sans-serif; fill: #0b1f35; }
+      .subtitle { font: 400 22px 'Microsoft YaHei', 'Aptos', Arial, sans-serif; fill: #5a6c80; }
+      .root { font: 700 30px 'Microsoft YaHei', 'Aptos', Arial, sans-serif; fill: #ffffff; }
+      .root-sub { font: 400 16px 'Microsoft YaHei', 'Aptos', Arial, sans-serif; fill: #c8e4f2; }
+      .group-title { font: 700 24px 'Microsoft YaHei', 'Aptos', Arial, sans-serif; fill: #0b1f35; }
+      .group-sub { font: 400 15px 'Microsoft YaHei', 'Aptos', Arial, sans-serif; fill: #5a6c80; }
+      .item { font: 700 18px 'Consolas', 'Microsoft YaHei', monospace; fill: #13283e; }
+      .item-sub { font: 400 15px 'Microsoft YaHei', 'Aptos', Arial, sans-serif; fill: #61758a; }
+      .small { font: 400 13px 'Microsoft YaHei', 'Aptos', Arial, sans-serif; fill: #6b7f93; }
+      .mono { font-family: Consolas, 'Microsoft YaHei', monospace; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1600" height="900" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1600" height="12" fill="#18c4da"/>
+  <text x="80" y="86" class="title">AIChemMCP 项目目录结构</text>
+  <text x="84" y="123" class="subtitle">面向自动化实验室场景的机器人任务调度仿真原型：接口、调度、数据、测试分层组织</text>
+
+  <rect x="80" y="168" width="1440" height="638" rx="28" fill="#ffffff" stroke="#d2e3ef" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="110" y="202" width="330" height="132" rx="16" fill="url(#navy)" filter="url(#shadow)"/>
+  <text x="142" y="258" class="root">AIChemMCP-main/</text>
+  <text x="144" y="292" class="root-sub">核心原型工程目录</text>
+  <text x="144" y="318" class="root-sub mono">demo.py / run_tests.py / README.md</text>
+
+  <line x1="440" y1="268" x2="520" y2="268" stroke="#18c4da" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="520" y1="268" x2="520" y2="670" stroke="#8dc8dc" stroke-width="2"/>
+  <line x1="520" y1="270" x2="570" y2="270" stroke="#18c4da" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="520" y1="390" x2="570" y2="390" stroke="#18c4da" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="520" y1="510" x2="570" y2="510" stroke="#18c4da" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="520" y1="630" x2="570" y2="630" stroke="#18c4da" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <g filter="url(#shadow)">
+    <rect x="585" y="205" width="395" height="102" rx="14" fill="#edf7fd" stroke="#c5ddec" stroke-width="2"/>
+    <rect x="585" y="205" width="10" height="102" fill="#1f6bff"/>
+  </g>
+  <text x="620" y="246" class="group-title">接口与工具层</text>
+  <text x="620" y="275" class="group-sub">对外提供工具调用入口，并封装调度运行时</text>
+  <text x="1015" y="236" class="item">servers/</text>
+  <text x="1015" y="264" class="item-sub mono">action_server.py</text>
+  <text x="1220" y="236" class="item">tools/</text>
+  <text x="1220" y="264" class="item-sub mono">action_server_tools.py</text>
+
+  <g filter="url(#shadow)">
+    <rect x="585" y="325" width="395" height="102" rx="14" fill="#eefbfc" stroke="#c5ddec" stroke-width="2"/>
+    <rect x="585" y="325" width="10" height="102" fill="#18c4da"/>
+  </g>
+  <text x="620" y="366" class="group-title">调度核心层</text>
+  <text x="620" y="395" class="group-sub">任务模型、资源模型、运行时和调度器</text>
+  <text x="1015" y="354" class="item">scheduling/</text>
+  <text x="1015" y="382" class="item-sub mono">models.py</text>
+  <text x="1160" y="382" class="item-sub mono">runtime.py</text>
+  <text x="1305" y="382" class="item-sub mono">scheduler.py</text>
+
+  <g filter="url(#shadow)">
+    <rect x="585" y="445" width="395" height="102" rx="14" fill="#f2fbf6" stroke="#c5ddec" stroke-width="2"/>
+    <rect x="585" y="445" width="10" height="102" fill="#27ae60"/>
+  </g>
+  <text x="620" y="486" class="group-title">示例数据与输出</text>
+  <text x="620" y="515" class="group-sub">mock 资源、示例 workflow 与 demo 结果归档</text>
+  <text x="1015" y="474" class="item">examples/</text>
+  <text x="1015" y="502" class="item-sub mono">sample_resources.json</text>
+  <text x="1015" y="528" class="item-sub mono">sample_tasks.json / sample_workflow.json</text>
+  <text x="1305" y="474" class="item">outputs/</text>
+  <text x="1305" y="502" class="item-sub mono">demo_result.json</text>
+
+  <g filter="url(#shadow)">
+    <rect x="585" y="565" width="395" height="102" rx="14" fill="#fff8ef" stroke="#c5ddec" stroke-width="2"/>
+    <rect x="585" y="565" width="10" height="102" fill="#f59240"/>
+  </g>
+  <text x="620" y="606" class="group-title">测试与验证</text>
+  <text x="620" y="635" class="group-sub">用 unittest 验证模型、运行时、工具和 demo 闭环</text>
+  <text x="1015" y="594" class="item">tests/</text>
+  <text x="1015" y="622" class="item-sub mono">test_scheduling_runtime.py</text>
+  <text x="1260" y="594" class="item">run_tests.py</text>
+  <text x="1260" y="622" class="item-sub">本地测试入口</text>
+
+  <rect x="110" y="395" width="330" height="104" rx="16" fill="#f1f7fb" stroke="#c5ddec" stroke-width="2"/>
+  <text x="142" y="434" class="group-title">辅助目录</text>
+  <text x="144" y="463" class="group-sub mono">static/  software_data/</text>
+  <text x="144" y="489" class="group-sub mono">dummy_planner_servers/</text>
+
+  <rect x="110" y="545" width="330" height="104" rx="16" fill="#f1f7fb" stroke="#c5ddec" stroke-width="2"/>
+  <text x="142" y="584" class="group-title">汇报与文档</text>
+  <text x="144" y="613" class="group-sub mono">docs/ppt/final/</text>
+  <text x="144" y="639" class="group-sub mono">speech.md / pptx / preview_images</text>
+
+  <line x1="275" y1="334" x2="275" y2="395" stroke="#8dc8dc" stroke-width="2"/>
+  <line x1="275" y1="499" x2="275" y2="545" stroke="#8dc8dc" stroke-width="2"/>
+
+  <rect x="180" y="725" width="1240" height="46" rx="12" fill="#eaf6fb" stroke="#c5ddec" stroke-width="1.5"/>
+  <text x="252" y="755" class="small">说明：图中聚焦当前结题 PPT 相关主线，省略 __pycache__、zip 归档和 IDE 配置等非核心展示项；当前系统为 simulation / mock hardware 原型。</text>
+</svg>

@@ -1,0 +1,35 @@
+{
+  "mode": "simulation",
+  "workstations": [
+    {
+      "id": "WS_REACTOR_A",
+      "name": "Reactor workstation A",
+      "tools": ["reaction_tool"],
+      "role": "Runs mock reaction protocols"
+    },
+    {
+      "id": "WS_MEASURE_A",
+      "name": "Measurement workstation A",
+      "tools": ["yield_measurement_tool", "ph_measurement_tool"],
+      "role": "Runs mock yield and pH measurements"
+    },
+    {
+      "id": "WS_CHAR_A",
+      "name": "Characterization workstation A",
+      "tools": ["hplc_tool", "nmr_tool", "characterization_tool"],
+      "role": "Runs mock HPLC, NMR, and generic characterization"
+    }
+  ],
+  "robots": [
+    {
+      "id": "RB_1",
+      "name": "Mobile robot 1",
+      "role": "Transfers samples between workstations"
+    },
+    {
+      "id": "RB_2",
+      "name": "Mobile robot 2",
+      "role": "Backup transfer robot"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+Create a 16:9 full-slide PowerPoint image in Chinese for an engineering practice final presentation.
+
+Slide role: system architecture.
+Title text, exact Chinese: "系统总体架构"
+
+Core visual: horizontal layered architecture diagram with these nodes and labels:
+"用户 / Agent" -> "Action Server" -> "Tools 工具封装" -> "SchedulingRuntime" -> "Scheduler 调度器" -> "Models / Resources"
+Add side inputs/outputs:
+"examples/*.json" feeds demo/Agent
+"outputs/demo_result.json" receives structured result
+"tests/" verifies runtime behavior
+
+Key callouts, exact short Chinese:
+"接口层：暴露 6 个工具"
+"运行时：维护任务、资源、时间和历史"
+"调度层：资源时间线预留与状态推进"
+
+Visual style: clean professional engineering-system showcase, white or very light gray canvas, deep blue headers, cyan arrows, dark gray text, subtle grid background, compact icon-like blocks, formal PPT diagram quality.
+
+Composition: title top-left, main architecture diagram across center, three callout cards below, thin footer label "simulation / mock hardware prototype". Avoid dense text; make diagram dominant.
+
+Constraints: readable Chinese text, no fake real-hardware claims, no page number, no decorative clutter, no Markdown/code block appearance.

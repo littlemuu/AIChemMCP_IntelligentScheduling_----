@@ -118,6 +118,8 @@ class Scheduler:
             task = self.tasks[workstation.current_task_id]
             if task.is_last_step():
                 continue
+            if task.next_step_scheduled:
+                continue
             if (task.current_step, task.current_step + 1) in task.seamless_indices:
                 continue
             candidates.append((workstation, task))
@@ -231,7 +233,7 @@ class Scheduler:
     def schedule(self, current_time: int) -> List[Dict[str, Any]]:
         commands: List[Dict[str, Any]] = []
         self._plan_regular_transfers(current_time)
-
+        
         idle_workstations = [ws for ws in self.workstations.values() if ws.status == ResourceStatus.IDLE]
         if not idle_workstations:
             return commands
@@ -253,4 +255,3 @@ class Scheduler:
                     break
 
         return commands
-

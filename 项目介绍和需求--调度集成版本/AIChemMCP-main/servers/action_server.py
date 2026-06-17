@@ -26,7 +26,7 @@ def tool_robotic_characterization(**params):
 
 
 def tool_scheduler_status(**_params):
-    return tool_manager.runtime.get_runtime_status()
+    return tool_manager.tool_scheduler_status()
 
 
 def tool_scheduler_advance(**params):
@@ -163,7 +163,17 @@ def action_server_main_loop():
 
             if method_name in AVAILABLE_TOOLS_ACTION:
                 tool_function = AVAILABLE_TOOLS_ACTION[method_name]
-                result = tool_function(**params)
+                if not isinstance(params, dict):
+                    result = {
+                        "ok": False,
+                        "error": {
+                            "code": "INVALID_PARAMS",
+                            "message": "params must be a JSON object.",
+                        },
+                        "input": params,
+                    }
+                else:
+                    result = tool_function(**params)
                 response = {"jsonrpc": "2.0", "result": result, "id": request_id}
             else:
                 response = {

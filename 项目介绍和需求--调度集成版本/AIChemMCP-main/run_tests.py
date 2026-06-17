@@ -1,0 +1,18 @@
+"""Run the prototype test suite with the standard library."""
+
+from __future__ import annotations
+
+import sys
+import unittest
+from pathlib import Path
+
+
+def main() -> int:
+    project_dir = Path(__file__).resolve().parent
+    suite = unittest.defaultTestLoader.discover(str(project_dir / "tests"))
+    result = unittest.TextTestRunner(verbosity=2).run(suite)
+    return 0 if result.wasSuccessful() else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

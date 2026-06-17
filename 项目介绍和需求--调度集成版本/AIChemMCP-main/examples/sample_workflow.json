@@ -1,0 +1,17 @@
+{
+  "workflow_id": "demo_three_step_flow",
+  "sample_id": "SAMPLE-FLOW-001",
+  "description": "Mock reaction-measurement-characterization chain for scheduler display.",
+  "workflow_tools": ["reaction_tool", "yield_measurement_tool", "hplc_tool"],
+  "processing_times": {
+    "reaction_tool": 18,
+    "yield_measurement_tool": 12,
+    "hplc_tool": 16
+  },
+  "seamless_steps": [[0, 1]],
+  "metadata": {
+    "task_type": "integrated_workflow",
+    "workflow_name": "reaction_to_hplc_demo",
+    "simulation_only": true
+  }
+}

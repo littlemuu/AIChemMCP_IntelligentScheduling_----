@@ -1,0 +1,90 @@
+<mxfile host="app.diagrams.net" modified="2026-06-17T00:00:00.000Z" agent="Codex" version="24.7.17">
+  <diagram name="AIChemMCP 项目目录结构">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f6f9fd;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="0" y="0" width="1600" height="900" as="geometry"/>
+        </mxCell>
+        <mxCell id="topbar" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#18c4da;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="0" y="0" width="1600" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="title" value="AIChemMCP 项目目录结构" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Microsoft YaHei;fontSize=44;fontStyle=1;fontColor=#0b1f35;" vertex="1" parent="1">
+          <mxGeometry x="80" y="42" width="600" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="subtitle" value="面向自动化实验室场景的机器人任务调度仿真原型：接口、调度、数据、测试分层组织" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Microsoft YaHei;fontSize=22;fontColor=#5a6c80;" vertex="1" parent="1">
+          <mxGeometry x="84" y="100" width="1080" height="34" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="canvas" value="" style="rounded=1;whiteSpace=wrap;html=1;arcSize=3;fillColor=#ffffff;strokeColor=#d2e3ef;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="168" width="1440" height="638" as="geometry"/>
+        </mxCell>
+        <mxCell id="rootProject" value="&lt;b&gt;AIChemMCP-main/&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 16px&quot;&gt;核心原型工程目录&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size: 14px&quot;&gt;demo.py / run_tests.py / README.md&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#0b2b4a;strokeColor=#0b2b4a;shadow=1;fontFamily=Microsoft YaHei;fontSize=30;fontColor=#ffffff;align=left;spacingLeft=28;" vertex="1" parent="1">
+          <mxGeometry x="110" y="202" width="330" height="132" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="hubline" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#8dc8dc;strokeWidth=2;" edge="1" parent="1" source="rootProject">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="520" y="670" as="targetPoint"/>
+            <Array as="points">
+              <mxPoint x="520" y="268"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="interface" value="&lt;b&gt;接口与工具层&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 15px&quot;&gt;对外提供工具调用入口，并封装调度运行时&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#edf7fd;strokeColor=#c5ddec;shadow=1;fontFamily=Microsoft YaHei;fontSize=24;fontColor=#0b1f35;align=left;spacingLeft=32;" vertex="1" parent="1">
+          <mxGeometry x="585" y="205" width="395" height="102" as="geometry"/>
+        </mxCell>
+        <mxCell id="interfaceFiles" value="&lt;b&gt;servers/&lt;/b&gt;&lt;br&gt;action_server.py&lt;br&gt;&lt;br&gt;&lt;b&gt;tools/&lt;/b&gt;&lt;br&gt;action_server_tools.py" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#ffffff;strokeColor=#d7e6f0;fontFamily=Consolas;fontSize=16;fontColor=#13283e;align=left;spacingLeft=22;" vertex="1" parent="1">
+          <mxGeometry x="1015" y="205" width="390" height="102" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="core" value="&lt;b&gt;调度核心层&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 15px&quot;&gt;任务模型、资源模型、运行时和调度器&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#eefbfc;strokeColor=#c5ddec;shadow=1;fontFamily=Microsoft YaHei;fontSize=24;fontColor=#0b1f35;align=left;spacingLeft=32;" vertex="1" parent="1">
+          <mxGeometry x="585" y="325" width="395" height="102" as="geometry"/>
+        </mxCell>
+        <mxCell id="coreFiles" value="&lt;b&gt;scheduling/&lt;/b&gt;&lt;br&gt;models.py / runtime.py / scheduler.py" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#ffffff;strokeColor=#d7e6f0;fontFamily=Consolas;fontSize=16;fontColor=#13283e;align=left;spacingLeft=22;" vertex="1" parent="1">
+          <mxGeometry x="1015" y="325" width="390" height="102" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="data" value="&lt;b&gt;示例数据与输出&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 15px&quot;&gt;mock 资源、示例 workflow 与 demo 结果归档&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#f2fbf6;strokeColor=#c5ddec;shadow=1;fontFamily=Microsoft YaHei;fontSize=24;fontColor=#0b1f35;align=left;spacingLeft=32;" vertex="1" parent="1">
+          <mxGeometry x="585" y="445" width="395" height="102" as="geometry"/>
+        </mxCell>
+        <mxCell id="dataFiles" value="&lt;b&gt;examples/&lt;/b&gt;&lt;br&gt;sample_resources.json&lt;br&gt;sample_tasks.json / sample_workflow.json&lt;br&gt;&lt;br&gt;&lt;b&gt;outputs/&lt;/b&gt; demo_result.json" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#ffffff;strokeColor=#d7e6f0;fontFamily=Consolas;fontSize=15;fontColor=#13283e;align=left;spacingLeft=22;" vertex="1" parent="1">
+          <mxGeometry x="1015" y="445" width="390" height="102" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="tests" value="&lt;b&gt;测试与验证&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 15px&quot;&gt;用 unittest 验证模型、运行时、工具和 demo 闭环&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#fff8ef;strokeColor=#c5ddec;shadow=1;fontFamily=Microsoft YaHei;fontSize=24;fontColor=#0b1f35;align=left;spacingLeft=32;" vertex="1" parent="1">
+          <mxGeometry x="585" y="565" width="395" height="102" as="geometry"/>
+        </mxCell>
+        <mxCell id="testFiles" value="&lt;b&gt;tests/&lt;/b&gt;&lt;br&gt;test_scheduling_runtime.py&lt;br&gt;&lt;br&gt;&lt;b&gt;run_tests.py&lt;/b&gt; 本地测试入口" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#ffffff;strokeColor=#d7e6f0;fontFamily=Consolas;fontSize=16;fontColor=#13283e;align=left;spacingLeft=22;" vertex="1" parent="1">
+          <mxGeometry x="1015" y="565" width="390" height="102" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="aux" value="&lt;b&gt;辅助目录&lt;/b&gt;&lt;br&gt;static/  software_data/&lt;br&gt;dummy_planner_servers/" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#f1f7fb;strokeColor=#c5ddec;fontFamily=Microsoft YaHei;fontSize=22;fontColor=#0b1f35;align=left;spacingLeft=28;" vertex="1" parent="1">
+          <mxGeometry x="110" y="395" width="330" height="104" as="geometry"/>
+        </mxCell>
+        <mxCell id="docs" value="&lt;b&gt;汇报与文档&lt;/b&gt;&lt;br&gt;docs/ppt/final/&lt;br&gt;speech.md / pptx / preview_images" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#f1f7fb;strokeColor=#c5ddec;fontFamily=Microsoft YaHei;fontSize=22;fontColor=#0b1f35;align=left;spacingLeft=28;" vertex="1" parent="1">
+          <mxGeometry x="110" y="545" width="330" height="104" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e1" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#18c4da;strokeWidth=3;" edge="1" parent="1" target="interface">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="520" y="270" as="sourcePoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="e2" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#18c4da;strokeWidth=3;" edge="1" parent="1" target="core">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="520" y="390" as="sourcePoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="e3" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#18c4da;strokeWidth=3;" edge="1" parent="1" target="data">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="520" y="510" as="sourcePoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="e4" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#18c4da;strokeWidth=3;" edge="1" parent="1" target="tests">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="520" y="630" as="sourcePoint"/></mxGeometry>
+        </mxCell>
+
+        <mxCell id="note" value="说明：图中聚焦当前结题 PPT 相关主线，省略 __pycache__、zip 归档和 IDE 配置等非核心展示项；当前系统为 simulation / mock hardware 原型。" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#eaf6fb;strokeColor=#c5ddec;fontFamily=Microsoft YaHei;fontSize=14;fontColor=#6b7f93;" vertex="1" parent="1">
+          <mxGeometry x="180" y="725" width="1240" height="46" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
