@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from itertools import count
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 from .models import ResourceStatus, Robot, Task, TaskStatus, Tool, Workstation
 from .scheduler import Scheduler
@@ -16,6 +16,7 @@ class SchedulingRuntime:
         self.current_time = 0
         self._task_counter = count(1)
         self._sample_counter = count(1)
+        self.execution_history: List[Dict[str, object]] = []
         self.workstations, self.robots, self.tool_to_workstation_map = self._setup_lab()
         self.scheduler = Scheduler(
             self.workstations,
@@ -53,6 +54,73 @@ class SchedulingRuntime:
     def _new_sample_id(self) -> str:
         return f"SAMPLE-{next(self._sample_counter):04d}"
 
+    def _require_text(self, value: object, field_name: str) -> str:
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"{field_name} must be a non-empty string.")
+        return value.strip()
+
+    def _positive_int(self, value: object, field_name: str) -> int:
+        try:
+            parsed = int(value)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"{field_name} must be a positive integer.") from exc
+        if parsed < 1:
+            raise ValueError(f"{field_name} must be a positive integer.")
+        return parsed
+
+    def _validate_workflow_tools(self, workflow_tools: List[str]) -> List[str]:
+        if not isinstance(workflow_tools, list) or not workflow_tools:
+            raise ValueError("workflow_tools must be a non-empty list.")
+
+        validated_tools = []
+        for index, tool_id in enumerate(workflow_tools):
+            validated_tool = self._require_text(tool_id, f"workflow_tools[{index}]")
+            if validated_tool not in self.tool_to_workstation_map:
+                raise ValueError(f"Unknown workflow tool: {validated_tool}.")
+            validated_tools.append(validated_tool)
+        return validated_tools
+
+    def _validate_processing_times(
+        self,
+        processing_times: Dict[str, int],
+        workflow_tools: List[str],
+    ) -> Dict[str, int]:
+        if not isinstance(processing_times, dict):
+            raise ValueError("processing_times must be an object keyed by tool id.")
+
+        validated_times: Dict[str, int] = {}
+        for tool_id in workflow_tools:
+            if tool_id not in processing_times:
+                raise ValueError(f"Missing processing time for tool: {tool_id}.")
+            validated_times[tool_id] = self._positive_int(
+                processing_times[tool_id],
+                f"processing_times.{tool_id}",
+            )
+        return validated_times
+
+    def _validate_seamless_steps(
+        self,
+        seamless_steps: Optional[List[tuple]],
+        total_steps: int,
+    ) -> List[Tuple[int, int]]:
+        if seamless_steps is None:
+            return []
+        if not isinstance(seamless_steps, list):
+            raise ValueError("seamless_steps must be a list of step pairs.")
+
+        validated_steps: List[Tuple[int, int]] = []
+        for index, pair in enumerate(seamless_steps):
+            if not isinstance(pair, (list, tuple)) or len(pair) != 2:
+                raise ValueError(f"seamless_steps[{index}] must contain two step indexes.")
+            left = int(pair[0])
+            right = int(pair[1])
+            if left < 0 or right >= total_steps or right != left + 1:
+                raise ValueError(
+                    f"seamless_steps[{index}] must point to adjacent valid steps."
+                )
+            validated_steps.append((left, right))
+        return validated_steps
+
     def _update_resource_states(self):
         workstations = self.scheduler.workstations
         robots = self.scheduler.robots
@@ -61,13 +129,16 @@ class SchedulingRuntime:
         for workstation in workstations.values():
             if not workstation.timeline:
                 continue
-
+            for task_id, start_time, _ in workstation.timeline:
+                task = self.scheduler.tasks[task_id]
+                processing_end = self.scheduler.processing_end_times[(workstation.id, task_id, start_time)]
+                if task.is_last_step() and task.status == TaskStatus.RUNNING and current_time >= processing_end:
+                    task.status = TaskStatus.COMPLETED
             active_segment = None
             for task_id, start_time, end_time in workstation.timeline:
                 if start_time <= current_time < end_time:
                     active_segment = (task_id, start_time, end_time)
                     break
-
             if active_segment is not None:
                 task_id, start_time, _ = active_segment
                 processing_end = self.scheduler.processing_end_times[(workstation.id, task_id, start_time)]
@@ -145,6 +216,13 @@ class SchedulingRuntime:
             workstation.status = ResourceStatus.BUSY
             workstation.current_task_id = task.id
             task.status = TaskStatus.RUNNING
+            self.execution_history.append(
+                {
+                    "time": self.current_time,
+                    "event": "COMMAND_EXECUTED",
+                    "command": self._summarize_commands([command])[0],
+                }
+            )
 
     def _summarize_commands(self, commands: List[dict]) -> List[dict]:
         return [
@@ -167,7 +245,18 @@ class SchedulingRuntime:
             "current_step": task.current_step,
             "total_steps": task.total_steps,
             "workflow_tools": task.workflow_tools,
+            "processing_times": task.processing_times,
             "metadata": task.metadata,
+        }
+
+    def _resource_snapshot(self, resource: object) -> Dict[str, object]:
+        return {
+            "status": resource.status.name,
+            "current_task_id": resource.current_task_id,
+            "timeline": [
+                {"task_id": task_id, "start": start_time, "end": end_time}
+                for task_id, start_time, end_time in resource.timeline
+            ],
         }
 
     def _collect_completion_events(self, previous_statuses: Dict[str, str]) -> List[Dict[str, object]]:
@@ -194,17 +283,36 @@ class SchedulingRuntime:
         sample_id: Optional[str] = None,
         metadata: Optional[Dict[str, object]] = None,
     ) -> Dict[str, object]:
+        validated_tools = self._validate_workflow_tools(workflow_tools)
+        validated_times = self._validate_processing_times(processing_times, validated_tools)
+        validated_seamless_steps = self._validate_seamless_steps(
+            seamless_steps,
+            len(validated_tools),
+        )
+        if sample_id is not None:
+            sample_id = self._require_text(sample_id, "sample_id")
+        if metadata is not None and not isinstance(metadata, dict):
+            raise ValueError("metadata must be an object.")
+
         task = Task(
             id=self._new_task_id(),
             sample_id=sample_id or self._new_sample_id(),
-            workflow_tools=workflow_tools,
-            processing_times=processing_times,
-            seamless_steps=seamless_steps or [],
+            workflow_tools=validated_tools,
+            processing_times=validated_times,
+            seamless_steps=validated_seamless_steps,
             metadata=metadata or {},
         )
         self.scheduler.add_task(task)
+        self.execution_history.append(
+            {
+                "time": self.current_time,
+                "event": "TASK_SUBMITTED",
+                "task": self._task_snapshot(task),
+            }
+        )
         commands = self.tick(steps=1)
         return {
+            "ok": True,
             "accepted": True,
             "task": self._task_snapshot(task),
             "scheduled_commands": self._summarize_commands(commands),
@@ -223,25 +331,26 @@ class SchedulingRuntime:
         return executed_commands
 
     def advance_time(self, steps: int = 1) -> Dict[str, object]:
-        if steps < 1:
-            raise ValueError("steps must be at least 1.")
+        steps = self._positive_int(steps, "steps")
 
         previous_statuses = {
             task_id: task.status.name
             for task_id, task in self.scheduler.tasks.items()
         }
         commands = self.tick(steps=steps)
+        completion_events = self._collect_completion_events(previous_statuses)
+        self.execution_history.extend(completion_events)
         return {
+            "ok": True,
             "advanced_steps": steps,
             "current_time": self.current_time,
             "scheduled_commands": self._summarize_commands(commands),
-            "completion_events": self._collect_completion_events(previous_statuses),
+            "completion_events": completion_events,
             "runtime_status": self.get_runtime_status(),
         }
 
     def run_until_all_complete(self, max_steps: int = 1000) -> Dict[str, object]:
-        if max_steps < 1:
-            raise ValueError("max_steps must be at least 1.")
+        max_steps = self._positive_int(max_steps, "max_steps")
 
         all_commands: List[dict] = []
         completion_events: List[Dict[str, object]] = []
@@ -257,13 +366,16 @@ class SchedulingRuntime:
             }
             commands = self.tick(steps=1)
             all_commands.extend(commands)
-            completion_events.extend(self._collect_completion_events(previous_statuses))
+            new_completion_events = self._collect_completion_events(previous_statuses)
+            completion_events.extend(new_completion_events)
+            self.execution_history.extend(new_completion_events)
             steps_run += 1
 
             if self.scheduler.tasks and all(task.status == TaskStatus.COMPLETED for task in self.scheduler.tasks.values()):
                 break
 
         return {
+            "ok": True,
             "steps_run": steps_run,
             "current_time": self.current_time,
             "all_completed": bool(self.scheduler.tasks)
@@ -274,9 +386,18 @@ class SchedulingRuntime:
         }
 
     def submit_reaction(self, recipe: Dict[str, object], vessel_id: str) -> Dict[str, object]:
+        if not isinstance(recipe, dict):
+            raise ValueError("recipe must be an object.")
+        vessel_id = self._require_text(vessel_id, "vessel_id")
+        estimated_duration = self._positive_int(
+            recipe.get("estimated_duration", 300),
+            "recipe.estimated_duration",
+        )
+        normalized_recipe = dict(recipe)
+        normalized_recipe["estimated_duration"] = estimated_duration
         workflow_tools = ["reaction_tool"]
-        processing_times = {"reaction_tool": int(recipe.get("estimated_duration", 300))}
-        metadata = {"task_type": "reaction", "recipe": recipe, "vessel_id": vessel_id}
+        processing_times = {"reaction_tool": estimated_duration}
+        metadata = {"task_type": "reaction", "recipe": normalized_recipe, "vessel_id": vessel_id}
         return self.submit_task(
             workflow_tools=workflow_tools,
             processing_times=processing_times,
@@ -284,12 +405,16 @@ class SchedulingRuntime:
         )
 
     def submit_measurement(self, sample_id: str, measurement_type: str) -> Dict[str, object]:
+        sample_id = self._require_text(sample_id, "sample_id")
+        normalized_type = self._require_text(measurement_type, "measurement_type").lower()
         tool_id = {
             "yield": "yield_measurement_tool",
             "ph": "ph_measurement_tool",
-        }.get(measurement_type, "yield_measurement_tool")
+        }.get(normalized_type)
+        if tool_id is None:
+            raise ValueError("measurement_type must be one of: yield, ph.")
         processing_times = {tool_id: 60}
-        metadata = {"task_type": "measurement", "measurement_type": measurement_type}
+        metadata = {"task_type": "measurement", "measurement_type": normalized_type}
         return self.submit_task(
             workflow_tools=[tool_id],
             processing_times=processing_times,
@@ -298,18 +423,50 @@ class SchedulingRuntime:
         )
 
     def submit_characterization(self, sample_id: str, analysis_method: str) -> Dict[str, object]:
+        sample_id = self._require_text(sample_id, "sample_id")
+        normalized_method = self._require_text(analysis_method, "analysis_method").upper()
         tool_id = {
             "HPLC": "hplc_tool",
             "NMR": "nmr_tool",
-        }.get(analysis_method.upper(), "characterization_tool")
+            "GENERAL": "characterization_tool",
+            "CHARACTERIZATION": "characterization_tool",
+        }.get(normalized_method)
+        if tool_id is None:
+            raise ValueError("analysis_method must be one of: HPLC, NMR, GENERAL.")
         processing_times = {tool_id: 120}
-        metadata = {"task_type": "characterization", "analysis_method": analysis_method}
+        metadata = {"task_type": "characterization", "analysis_method": normalized_method}
         return self.submit_task(
             workflow_tools=[tool_id],
             processing_times=processing_times,
             sample_id=sample_id,
             metadata=metadata,
         )
+
+    def get_resource_usage(self) -> Dict[str, object]:
+        def summarize(resource):
+            task_ids = sorted({task_id for task_id, _, _ in resource.timeline})
+            busy_time = sum(end_time - start_time for _, start_time, end_time in resource.timeline)
+            return {
+                "status": resource.status.name,
+                "current_task_id": resource.current_task_id,
+                "tasks_handled": task_ids,
+                "reserved_or_busy_time": busy_time,
+                "timeline": [
+                    {"task_id": task_id, "start": start_time, "end": end_time}
+                    for task_id, start_time, end_time in resource.timeline
+                ],
+            }
+
+        return {
+            "workstations": {
+                ws_id: summarize(workstation)
+                for ws_id, workstation in self.scheduler.workstations.items()
+            },
+            "robots": {
+                robot_id: summarize(robot)
+                for robot_id, robot in self.scheduler.robots.items()
+            },
+        }
 
     def get_runtime_status(self) -> Dict[str, object]:
         return {
@@ -320,17 +477,13 @@ class SchedulingRuntime:
                 for task_id, task in self.scheduler.tasks.items()
             },
             "workstations": {
-                ws_id: {
-                    "status": workstation.status.name,
-                    "current_task_id": workstation.current_task_id,
-                }
+                ws_id: self._resource_snapshot(workstation)
                 for ws_id, workstation in self.scheduler.workstations.items()
             },
             "robots": {
-                robot_id: {
-                    "status": robot.status.name,
-                    "current_task_id": robot.current_task_id,
-                }
+                robot_id: self._resource_snapshot(robot)
                 for robot_id, robot in self.scheduler.robots.items()
             },
+            "resource_usage": self.get_resource_usage(),
+            "execution_history": list(self.execution_history),
         }

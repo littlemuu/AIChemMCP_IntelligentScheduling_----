@@ -1,0 +1,496 @@
+{
+  "demo_mode": "simulation",
+  "submitted_tasks": [
+    {
+      "source_id": "demo_reaction_001",
+      "task_type": "reaction",
+      "runtime_task": {
+        "task_id": "TASK-0001",
+        "sample_id": "SAMPLE-0001",
+        "status": "RUNNING",
+        "current_step": 0,
+        "total_steps": 1,
+        "workflow_tools": [
+          "reaction_tool"
+        ],
+        "processing_times": {
+          "reaction_tool": 24
+        },
+        "metadata": {
+          "task_type": "reaction",
+          "recipe": {
+            "name": "esterification_screen",
+            "estimated_duration": 24,
+            "temperature_c": 60,
+            "solvent": "ethanol"
+          },
+          "vessel_id": "VIAL-A1"
+        }
+      }
+    },
+    {
+      "source_id": "demo_measurement_001",
+      "task_type": "measurement",
+      "runtime_task": {
+        "task_id": "TASK-0002",
+        "sample_id": "SAMPLE-REF-001",
+        "status": "RUNNING",
+        "current_step": 0,
+        "total_steps": 1,
+        "workflow_tools": [
+          "yield_measurement_tool"
+        ],
+        "processing_times": {
+          "yield_measurement_tool": 60
+        },
+        "metadata": {
+          "task_type": "measurement",
+          "measurement_type": "yield"
+        }
+      }
+    },
+    {
+      "source_id": "demo_characterization_001",
+      "task_type": "characterization",
+      "runtime_task": {
+        "task_id": "TASK-0003",
+        "sample_id": "SAMPLE-REF-002",
+        "status": "RUNNING",
+        "current_step": 0,
+        "total_steps": 1,
+        "workflow_tools": [
+          "hplc_tool"
+        ],
+        "processing_times": {
+          "hplc_tool": 120
+        },
+        "metadata": {
+          "task_type": "characterization",
+          "analysis_method": "HPLC"
+        }
+      }
+    },
+    {
+      "source_id": "demo_three_step_flow",
+      "task_type": "integrated_workflow",
+      "runtime_task": {
+        "task_id": "TASK-0004",
+        "sample_id": "SAMPLE-FLOW-001",
+        "status": "WAITING",
+        "current_step": 0,
+        "total_steps": 3,
+        "workflow_tools": [
+          "reaction_tool",
+          "yield_measurement_tool",
+          "hplc_tool"
+        ],
+        "processing_times": {
+          "reaction_tool": 18,
+          "yield_measurement_tool": 12,
+          "hplc_tool": 16
+        },
+        "metadata": {
+          "task_type": "integrated_workflow",
+          "workflow_name": "reaction_to_hplc_demo",
+          "simulation_only": true
+        }
+      }
+    }
+  ],
+  "scheduling_process_summary": [
+    {
+      "stage": "after_submit",
+      "time": 4,
+      "task_count": 4,
+      "queued_tasks": [
+        "TASK-0004"
+      ]
+    },
+    {
+      "stage": "after_advance",
+      "time": 39,
+      "completion_events": [
+        {
+          "event": "TASK_COMPLETED",
+          "task_id": "TASK-0001",
+          "sample_id": "SAMPLE-0001",
+          "completed_at": 39
+        }
+      ]
+    },
+    {
+      "stage": "final",
+      "time": 152,
+      "steps_run": 113,
+      "all_completed": true,
+      "completion_events": [
+        {
+          "event": "TASK_COMPLETED",
+          "task_id": "TASK-0002",
+          "sample_id": "SAMPLE-REF-001",
+          "completed_at": 68
+        },
+        {
+          "event": "TASK_COMPLETED",
+          "task_id": "TASK-0003",
+          "sample_id": "SAMPLE-REF-002",
+          "completed_at": 135
+        },
+        {
+          "event": "TASK_COMPLETED",
+          "task_id": "TASK-0004",
+          "sample_id": "SAMPLE-FLOW-001",
+          "completed_at": 152
+        }
+      ]
+    }
+  ],
+  "final_task_status": {
+    "TASK-0001": {
+      "task_id": "TASK-0001",
+      "sample_id": "SAMPLE-0001",
+      "status": "COMPLETED",
+      "current_step": 0,
+      "total_steps": 1,
+      "workflow_tools": [
+        "reaction_tool"
+      ],
+      "processing_times": {
+        "reaction_tool": 24
+      },
+      "metadata": {
+        "task_type": "reaction",
+        "recipe": {
+          "name": "esterification_screen",
+          "estimated_duration": 24,
+          "temperature_c": 60,
+          "solvent": "ethanol"
+        },
+        "vessel_id": "VIAL-A1"
+      }
+    },
+    "TASK-0002": {
+      "task_id": "TASK-0002",
+      "sample_id": "SAMPLE-REF-001",
+      "status": "COMPLETED",
+      "current_step": 0,
+      "total_steps": 1,
+      "workflow_tools": [
+        "yield_measurement_tool"
+      ],
+      "processing_times": {
+        "yield_measurement_tool": 60
+      },
+      "metadata": {
+        "task_type": "measurement",
+        "measurement_type": "yield"
+      }
+    },
+    "TASK-0003": {
+      "task_id": "TASK-0003",
+      "sample_id": "SAMPLE-REF-002",
+      "status": "COMPLETED",
+      "current_step": 0,
+      "total_steps": 1,
+      "workflow_tools": [
+        "hplc_tool"
+      ],
+      "processing_times": {
+        "hplc_tool": 120
+      },
+      "metadata": {
+        "task_type": "characterization",
+        "analysis_method": "HPLC"
+      }
+    },
+    "TASK-0004": {
+      "task_id": "TASK-0004",
+      "sample_id": "SAMPLE-FLOW-001",
+      "status": "COMPLETED",
+      "current_step": 2,
+      "total_steps": 3,
+      "workflow_tools": [
+        "reaction_tool",
+        "yield_measurement_tool",
+        "hplc_tool"
+      ],
+      "processing_times": {
+        "reaction_tool": 18,
+        "yield_measurement_tool": 12,
+        "hplc_tool": 16
+      },
+      "metadata": {
+        "task_type": "integrated_workflow",
+        "workflow_name": "reaction_to_hplc_demo",
+        "simulation_only": true
+      }
+    }
+  },
+  "simulation_time": 152,
+  "resource_usage": {
+    "workstations": {
+      "WS_REACTOR_A": {
+        "status": "IDLE",
+        "current_task_id": null,
+        "tasks_handled": [
+          "TASK-0001",
+          "TASK-0004"
+        ],
+        "reserved_or_busy_time": 45,
+        "timeline": [
+          {
+            "task_id": "TASK-0001",
+            "start": 0,
+            "end": 26
+          },
+          {
+            "task_id": "TASK-0004",
+            "start": 27,
+            "end": 46
+          }
+        ]
+      },
+      "WS_MEASURE_A": {
+        "status": "IDLE",
+        "current_task_id": null,
+        "tasks_handled": [
+          "TASK-0002",
+          "TASK-0004"
+        ],
+        "reserved_or_busy_time": 99,
+        "timeline": [
+          {
+            "task_id": "TASK-0002",
+            "start": 1,
+            "end": 67
+          },
+          {
+            "task_id": "TASK-0004",
+            "start": 67,
+            "end": 100
+          }
+        ]
+      },
+      "WS_CHAR_A": {
+        "status": "IDLE",
+        "current_task_id": null,
+        "tasks_handled": [
+          "TASK-0003",
+          "TASK-0004"
+        ],
+        "reserved_or_busy_time": 149,
+        "timeline": [
+          {
+            "task_id": "TASK-0003",
+            "start": 2,
+            "end": 134
+          },
+          {
+            "task_id": "TASK-0004",
+            "start": 134,
+            "end": 151
+          }
+        ]
+      }
+    },
+    "robots": {
+      "RB_1": {
+        "status": "IDLE",
+        "current_task_id": null,
+        "tasks_handled": [
+          "TASK-0004"
+        ],
+        "reserved_or_busy_time": 80,
+        "timeline": [
+          {
+            "task_id": "TASK-0004",
+            "start": 27,
+            "end": 67
+          },
+          {
+            "task_id": "TASK-0004",
+            "start": 94,
+            "end": 134
+          }
+        ]
+      },
+      "RB_2": {
+        "status": "IDLE",
+        "current_task_id": null,
+        "tasks_handled": [],
+        "reserved_or_busy_time": 0,
+        "timeline": []
+      }
+    }
+  },
+  "execution_history": [
+    {
+      "time": 0,
+      "event": "TASK_SUBMITTED",
+      "task": {
+        "task_id": "TASK-0001",
+        "sample_id": "SAMPLE-0001",
+        "status": "WAITING",
+        "current_step": 0,
+        "total_steps": 1,
+        "workflow_tools": [
+          "reaction_tool"
+        ],
+        "processing_times": {
+          "reaction_tool": 24
+        },
+        "metadata": {
+          "task_type": "reaction",
+          "recipe": {
+            "name": "esterification_screen",
+            "estimated_duration": 24,
+            "temperature_c": 60,
+            "solvent": "ethanol"
+          },
+          "vessel_id": "VIAL-A1"
+        }
+      }
+    },
+    {
+      "time": 0,
+      "event": "COMMAND_EXECUTED",
+      "command": {
+        "command_id": "cmd-300f2f4b",
+        "action": "START_PROCESSING",
+        "target_resource": "WS_REACTOR_A",
+        "task_id": "TASK-0001",
+        "step_index": 0,
+        "tool_id": "reaction_tool"
+      }
+    },
+    {
+      "time": 1,
+      "event": "TASK_SUBMITTED",
+      "task": {
+        "task_id": "TASK-0002",
+        "sample_id": "SAMPLE-REF-001",
+        "status": "WAITING",
+        "current_step": 0,
+        "total_steps": 1,
+        "workflow_tools": [
+          "yield_measurement_tool"
+        ],
+        "processing_times": {
+          "yield_measurement_tool": 60
+        },
+        "metadata": {
+          "task_type": "measurement",
+          "measurement_type": "yield"
+        }
+      }
+    },
+    {
+      "time": 1,
+      "event": "COMMAND_EXECUTED",
+      "command": {
+        "command_id": "cmd-7cfbc88b",
+        "action": "START_PROCESSING",
+        "target_resource": "WS_MEASURE_A",
+        "task_id": "TASK-0002",
+        "step_index": 0,
+        "tool_id": "yield_measurement_tool"
+      }
+    },
+    {
+      "time": 2,
+      "event": "TASK_SUBMITTED",
+      "task": {
+        "task_id": "TASK-0003",
+        "sample_id": "SAMPLE-REF-002",
+        "status": "WAITING",
+        "current_step": 0,
+        "total_steps": 1,
+        "workflow_tools": [
+          "hplc_tool"
+        ],
+        "processing_times": {
+          "hplc_tool": 120
+        },
+        "metadata": {
+          "task_type": "characterization",
+          "analysis_method": "HPLC"
+        }
+      }
+    },
+    {
+      "time": 2,
+      "event": "COMMAND_EXECUTED",
+      "command": {
+        "command_id": "cmd-6c2811de",
+        "action": "START_PROCESSING",
+        "target_resource": "WS_CHAR_A",
+        "task_id": "TASK-0003",
+        "step_index": 0,
+        "tool_id": "hplc_tool"
+      }
+    },
+    {
+      "time": 3,
+      "event": "TASK_SUBMITTED",
+      "task": {
+        "task_id": "TASK-0004",
+        "sample_id": "SAMPLE-FLOW-001",
+        "status": "WAITING",
+        "current_step": 0,
+        "total_steps": 3,
+        "workflow_tools": [
+          "reaction_tool",
+          "yield_measurement_tool",
+          "hplc_tool"
+        ],
+        "processing_times": {
+          "reaction_tool": 18,
+          "yield_measurement_tool": 12,
+          "hplc_tool": 16
+        },
+        "metadata": {
+          "task_type": "integrated_workflow",
+          "workflow_name": "reaction_to_hplc_demo",
+          "simulation_only": true
+        }
+      }
+    },
+    {
+      "time": 27,
+      "event": "COMMAND_EXECUTED",
+      "command": {
+        "command_id": "cmd-784f855a",
+        "action": "START_PROCESSING",
+        "target_resource": "WS_REACTOR_A",
+        "task_id": "TASK-0004",
+        "step_index": 0,
+        "tool_id": "reaction_tool"
+      }
+    },
+    {
+      "event": "TASK_COMPLETED",
+      "task_id": "TASK-0001",
+      "sample_id": "SAMPLE-0001",
+      "completed_at": 39
+    },
+    {
+      "event": "TASK_COMPLETED",
+      "task_id": "TASK-0002",
+      "sample_id": "SAMPLE-REF-001",
+      "completed_at": 68
+    },
+    {
+      "event": "TASK_COMPLETED",
+      "task_id": "TASK-0003",
+      "sample_id": "SAMPLE-REF-002",
+      "completed_at": 135
+    },
+    {
+      "event": "TASK_COMPLETED",
+      "task_id": "TASK-0004",
+      "sample_id": "SAMPLE-FLOW-001",
+      "completed_at": 152
+    }
+  ],
+  "all_completed": true
+}

@@ -1,0 +1,12 @@
+Create a 16:9 full-slide PowerPoint image in Chinese for an engineering practice final presentation.
+
+Slide role: cover.
+Title text, exact Chinese: "AIChemMCP 智能调度原型系统"
+Subtitle text, exact Chinese: "工程实践结题汇报"
+Small label text: "仿真调度 · 模拟设备接口 · Action Server · Scheduling Runtime"
+
+Visual style: clean professional engineering-system showcase, blue/cyan/deep gray technology palette, dark navy background with subtle laboratory automation silhouette, digital scheduling grid lines, thin cyan circuit-like accents, no cartoon style, no stock photo watermark.
+
+Composition: large title on the left-center, subtitle below, three compact keyword chips at the bottom, abstract automated chemistry lab background on the right with simulated robotic arm/workstation shapes. Make it look like a formal PPT cover, not a Markdown document.
+
+Constraints: readable Chinese text, no fake real-hardware claims, no school logo, no page number, no extra paragraphs.

@@ -1,0 +1,20 @@
+Create a 16:9 full-slide PowerPoint image in Chinese for an engineering practice final presentation.
+
+Slide role: demo process and scheduling loop.
+Title text, exact Chinese: "Demo 演示流程 / 调度闭环"
+
+Use only these real project facts:
+- demo mode: simulation/mock hardware
+- submitted tasks: TASK-0001, TASK-0002, TASK-0003, TASK-0004
+- TASK-0004 is a three-step workflow: reaction_tool -> yield_measurement_tool -> hplc_tool
+- final simulation time: 152
+- all_completed: true
+- resources: WS_REACTOR_A, WS_MEASURE_A, WS_CHAR_A, RB_1, RB_2
+
+Core visual: timeline from "提交任务" to "推进时间 39" to "运行到完成 152"; include a circular closed loop: "工具调用 -> Runtime -> Scheduler -> 状态快照 -> demo_result.json".
+
+Visual style: clean professional engineering-system showcase, blue/cyan/deep gray, dashboard-like result cards, terminal-output feeling as a small inset but not a real screenshot. Use a green OK badge for "all_completed: true".
+
+Composition: title top-left, timeline across center, right side result dashboard cards "4 tasks completed", "simulation_time 152", "8 tests OK" as supporting engineering evidence. Footer note: "当前为仿真调度结果".
+
+Constraints: readable Chinese text, no fake real-hardware claims, no page number, no long paragraphs, no invented hardware metrics.
